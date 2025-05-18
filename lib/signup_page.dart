@@ -1,3 +1,4 @@
+import 'package:dairy_go_project/login_page.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -177,7 +178,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       const Text("Don't have an account? "),
                       GestureDetector(
                         onTap: () {
-                          // Navigate to sign in
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(),));
                         },
                         child: const Text(
                           'Sign In',

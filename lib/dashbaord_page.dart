@@ -166,7 +166,7 @@ class DashboardPage extends StatelessWidget {
                   childAspectRatio: 0.72,
                   children: const [
                     ProductCard(
-                      image: 'assets/images/milk.jpg',
+                      image: 'assets/images/milk bottle.jpg',
                       title: 'Milk Bottle',
                       price: 'Rs. 120',
                     ),

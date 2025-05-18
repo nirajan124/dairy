@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
-
-import 'login_page.dart'; // Make sure this path matches your project
+import 'package:dairy_go_project/login_page.dart';
+import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,13 +10,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const LoginPage()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     });
   }
@@ -25,41 +25,27 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // App logo (put your own asset path)
-            Image.asset(
-              'assets/images/Splash.jpg',
-              height: 150,
-              width: 150,
-              fit: BoxFit.cover,
-              errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                return const Icon(Icons.image_not_supported, size: 100, color: Colors.grey);
-              },
-            ),
-
-            const SizedBox(height: 20),
-            const Text(
-              'DairyGo',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.orange,
+      body: Stack(
+        children: [
+          // Background Image
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/splash.jpg'),
+                fit: BoxFit.fill,
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'Fresh Dairy Products at Your Doorstep',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 14,
-              ),
-            )
-          ],
-        ),
+          ),
+          // Loading Indicator
+          const Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 6.0,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }
