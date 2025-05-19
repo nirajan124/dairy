@@ -1,26 +1,29 @@
+import 'package:dairy_go_project/view/login_page.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
+  bool isChecked = false;
 
-  // ✅ Login method with validation
-  void _login() {
-    final username = emailController.text.trim();
+  void _register() {
+    final email = emailController.text.trim();
+    final username = usernameController.text.trim();
     final password = passwordController.text;
 
-    if (username.isEmpty || password.isEmpty) {
+    if (email.isEmpty || username.isEmpty || password.isEmpty) {
       _showAlertDialog(
         title: "Missing Fields",
-        content: "Please enter both the username and password to login.",
+        content: "Please fill in all fields to register.",
       );
       return;
     }
@@ -33,14 +36,21 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    // ✅ Navigate to dashboard (replace this with your actual navigation)
+    if (!isChecked) {
+      _showAlertDialog(
+        title: "Agreement Required",
+        content: "You must agree to the Terms and Privacy Policy.",
+      );
+      return;
+    }
+
+    // If all validations pass — replace this with your real logic
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => DashboardView()),
+      MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
 
-  // ✅ Alert dialog method
   void _showAlertDialog({required String title, required String content}) {
     showDialog(
       context: context,
@@ -62,9 +72,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Center(
@@ -73,20 +80,19 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Login to your\naccount.',
+                  'Create your new\naccount',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 26,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  'Please sign in to your account',
+                  'Create an account to start looking for the food\nyou like',
                   style: TextStyle(color: Colors.grey),
                 ),
                 const SizedBox(height: 30),
 
-                // Email Field
                 const Text(
                   'Email Address',
                   style: TextStyle(fontWeight: FontWeight.w500),
@@ -95,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    hintText: '',
+                    hintText: 'nirajanbhattarai@gmail.com',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -104,7 +110,23 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
 
-                // Password Field
+                const Text(
+                  'User Name',
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                    hintText: 'Nirajan Bhattarai',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
                 const Text(
                   'Password',
                   style: TextStyle(fontWeight: FontWeight.w500),
@@ -133,28 +155,47 @@ class _LoginPageState extends State<LoginPage> {
                     const EdgeInsets.symmetric(horizontal: 16),
                   ),
                 ),
+                const SizedBox(height: 12),
 
-                const SizedBox(height: 10),
-
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Forgot password?',
-                      style: TextStyle(color: Colors.orange),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isChecked,
+                      onChanged: (value) {
+                        setState(() {
+                          isChecked = value!;
+                        });
+                      },
+                      activeColor: Colors.orange,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)),
                     ),
-                  ),
+                    Expanded(
+                      child: Wrap(
+                        children: const [
+                          Text("I Agree with "),
+                          Text(
+                            "Terms of Service ",
+                            style: TextStyle(color: Colors.orange),
+                          ),
+                          Text("and "),
+                          Text(
+                            "Privacy Policy",
+                            style: TextStyle(color: Colors.orange),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
+                const SizedBox(height: 20),
 
-                const SizedBox(height: 10),
-
-                // ✅ Sign In Button triggers _login
+                // Register Button
                 SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: _login,
+                    onPressed: _register,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
                       shape: RoundedRectangleBorder(
@@ -162,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     child: const Text(
-                      'Sign In',
+                      'Register',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -173,20 +214,20 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 20),
 
-                // Register Link
+                // Sign In Link
                 Center(
                   child: Wrap(
                     children: [
-                      const Text("Don't have an account? "),
+                      const Text("Already have an account? "),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SignUpPage()),
+                            MaterialPageRoute(builder: (context) => LoginPage()),
                           );
                         },
                         child: const Text(
-                          'Register',
+                          'Sign In',
                           style: TextStyle(
                             color: Colors.orange,
                             fontWeight: FontWeight.w600,
@@ -195,32 +236,12 @@ class _LoginPageState extends State<LoginPage> {
                       )
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-}
-
-// Dummy page — replace with your actual dashboard page
-class DashboardView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("Welcome to Dashboard")),
-    );
-  }
-}
-
-// Dummy SignUpPage class
-class SignUpPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("Register Page")),
     );
   }
 }
